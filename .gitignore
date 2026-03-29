@@ -1,0 +1,18 @@
+# Secrets and local environment files
+.env
+**/.env
+**/stack.env
+*.env
+
+# Keep examples in version control
+!.env.example
+!**/.env.example
+
+# Runtime and generated data
+**/data/
+**/postgres/
+**/library/
+**/uploads_data/
+**/processed_data/
+**/ollama/
+**/openwebui/

@@ -1,0 +1,24 @@
+#first version from gpt. muss noch bearbeitet werden. 
+
+version: '3.8'
+
+services:
+  minecraft:
+    image: itzg/minecraft-server:latest
+    container_name: minecraft-server
+    ports:
+      - "25565:25565"
+    environment:
+      EULA: "TRUE"
+      TYPE: "VANILLA"
+      VERSION: "LATEST"
+      MEMORY: "2G"
+      DIFFICULTY: "normal"
+      MAX_PLAYERS: "20"
+      MOTD: "Mein Minecraft Server"
+      ONLINE_MODE: "TRUE"
+    volumes:
+      - ./data:/data
+    restart: unless-stopped
+    stdin_open: true
+    tty: true

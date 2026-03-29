@@ -1,0 +1,11 @@
+services:
+  filewizard:
+    image: loredcast/filewizard:latest
+    container_name: filewizard
+    ports:
+      - "6969:8000"
+    environment:
+      - LOCAL_ONLY=True
+    volumes:
+      - ./uploads_data:/app/uploads
+      - ./processed_data:/app/processed
