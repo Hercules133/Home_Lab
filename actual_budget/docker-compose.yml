@@ -1,0 +1,11 @@
+services:
+  actual_budget:
+    image: actualbudget/actual-server:latest
+    container_name: actual_budget
+    env_file:
+      - .env
+    ports:
+      - 127.0.0.1:5007:5006
+    volumes:
+      - ./data:/data
+    restart: unless-stopped

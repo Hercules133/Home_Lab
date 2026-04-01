@@ -1,0 +1,33 @@
+services:
+  paperless:
+    image: paperlessngx/paperless-ngx:latest
+    container_name: paperless
+    env_file:
+      - .env
+    depends_on:
+      - paperless_db
+      - paperless_redis
+    ports:
+      - 127.0.0.1:8002:8000
+    volumes:
+      - ./data:/usr/src/paperless/data
+      - ./media:/usr/src/paperless/media
+      - ./export:/usr/src/paperless/export
+      - ./consume:/usr/src/paperless/consume
+    restart: unless-stopped
+
+  paperless_db:
+    image: postgres:16-alpine
+    container_name: paperless_db
+    environment:
+      POSTGRES_DB: ${PAPERLESS_DB_NAME}
+      POSTGRES_USER: ${PAPERLESS_DB_USER}
+      POSTGRES_PASSWORD: ${PAPERLESS_DB_PASSWORD}
+    volumes:
+      - ./postgres:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  paperless_redis:
+    image: redis:7-alpine
+    container_name: paperless_redis
+    restart: unless-stopped

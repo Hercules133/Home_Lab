@@ -1,6 +1,4 @@
-#first version from gpt. muss noch bearbeitet werden. 
-
-version: '3.8'
+# first version from gpt. muss noch bearbeitet werden.
 
 services:
   minecraft:

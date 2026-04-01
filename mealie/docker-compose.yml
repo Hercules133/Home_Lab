@@ -1,0 +1,24 @@
+services:
+  mealie:
+    image: hkotel/mealie:latest
+    container_name: mealie
+    env_file:
+      - .env
+    depends_on:
+      - mealie_db
+    ports:
+      - 127.0.0.1:9925:9000
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped
+
+  mealie_db:
+    image: postgres:16-alpine
+    container_name: mealie_db
+    environment:
+      POSTGRES_DB: ${MEALIE_DB_NAME}
+      POSTGRES_USER: ${MEALIE_DB_USER}
+      POSTGRES_PASSWORD: ${MEALIE_DB_PASSWORD}
+    volumes:
+      - ./postgres:/var/lib/postgresql/data
+    restart: unless-stopped

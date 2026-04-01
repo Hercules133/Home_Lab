@@ -22,8 +22,12 @@ The repository goal is to make all stacks fully ready-to-run with minimal manual
 
 ## Run
 ```bash
+cp .env.example .env
 docker compose up -d
 ```
+
+## Optional Environment
+- `HOMEPAGE_ALLOWED_HOSTS` (comma-separated hostnames/IPs)
 
 ## Notes
 - Compose file requires a top-level `services:` key (fixed).

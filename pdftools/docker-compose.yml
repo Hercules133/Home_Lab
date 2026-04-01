@@ -1,0 +1,16 @@
+services:
+  pdftools:
+    image: stirlingtools/stirling-pdf:latest
+    container_name: pdftools
+    ports:
+      - 127.0.0.1:8084:8080
+    environment:
+      - MODE=BOTH
+      - LANGS=en_GB,de_DE
+      - SECURITY_ENABLELOGIN=false
+    volumes:
+      - ./stirling-data/tessdata:/usr/share/tessdata
+      - ./stirling-data/configs:/configs
+      - ./stirling-data/logs:/logs
+      - ./stirling-data/pipeline:/pipeline
+    restart: unless-stopped

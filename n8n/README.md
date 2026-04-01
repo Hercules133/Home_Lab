@@ -20,10 +20,12 @@ The repository goal is to make all stacks fully ready-to-run with minimal manual
 
 ## Run
 ```bash
+cp .env.example .env
 docker compose up -d
 ```
 
 ## Required Environment (recommended)
+- File: `.env` (you can start from `.env.example`)
 - `N8N_BASIC_AUTH_USER`
 - `N8N_BASIC_AUTH_PASSWORD`
 

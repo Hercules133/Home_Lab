@@ -1,0 +1,18 @@
+services:
+  authelia:
+    image: authelia/authelia:latest
+    container_name: authelia
+    env_file:
+      - .env
+    depends_on:
+      - authelia_redis
+    ports:
+      - 127.0.0.1:9091:9091
+    volumes:
+      - ./config:/config
+    restart: unless-stopped
+
+  authelia_redis:
+    image: redis:7-alpine
+    container_name: authelia_redis
+    restart: unless-stopped

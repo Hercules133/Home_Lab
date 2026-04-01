@@ -25,4 +25,4 @@ docker compose up -d
 
 ## Notes
 - `EULA` is set to `TRUE`; ensure this matches your intent.
-- `version: '3.8'` is optional in modern Docker Compose and can be removed later.
+- Compose file is on modern format (no top-level `version` key).

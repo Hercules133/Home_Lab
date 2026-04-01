@@ -26,11 +26,12 @@ The repository goal is to make all stacks fully ready-to-run with minimal manual
 
 ## Run
 ```bash
+cp .env.example .env
 docker compose up -d
 ```
 
 ## Required Environment
-- File: `.env` in this folder
+- File: `.env` in this folder (you can start from `.env.example`)
 - Important keys:
   - `UPLOAD_LOCATION`
   - `DB_DATA_LOCATION`

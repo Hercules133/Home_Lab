@@ -1,0 +1,79 @@
+services:
+  netBox:
+    image: netboxcommunity/netbox:v4.5.5
+    container_name: netBox
+    depends_on:
+      - netbox-postgres
+      - netbox-redis
+    environment:
+      - DB_HOST=netbox-postgres
+      - DB_PORT=5432
+      - DB_NAME=netbox
+      - DB_USER=netbox
+      - DB_PASSWORD=${NETBOX_DB_PASSWORD:-netbox}
+      - REDIS_HOST=netbox-redis
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=${NETBOX_REDIS_PASSWORD:-netboxredis}
+      - REDIS_DATABASE=0
+      - REDIS_CACHE_HOST=netbox-redis
+      - REDIS_CACHE_PORT=6379
+      - REDIS_CACHE_PASSWORD=${NETBOX_REDIS_PASSWORD:-netboxredis}
+      - REDIS_CACHE_DATABASE=1
+      - SECRET_KEY=${NETBOX_SECRET_KEY:-please-change-this-secret-key}
+      - ALLOWED_HOSTS=*
+    ports:
+      - 127.0.0.1:8000:8080
+    volumes:
+      - ./data/netbox-media:/opt/netbox/netbox/media
+      - ./data/netbox-reports:/opt/netbox/netbox/reports
+      - ./data/netbox-scripts:/opt/netbox/netbox/scripts
+    restart: unless-stopped
+
+  netbox-worker:
+    image: netboxcommunity/netbox:v4.5.5
+    container_name: netbox-worker
+    command: /opt/netbox/venv/bin/python /opt/netbox/netbox/manage.py rqworker
+    depends_on:
+      - netBox
+    environment:
+      - DB_HOST=netbox-postgres
+      - DB_PORT=5432
+      - DB_NAME=netbox
+      - DB_USER=netbox
+      - DB_PASSWORD=${NETBOX_DB_PASSWORD:-netbox}
+      - REDIS_HOST=netbox-redis
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=${NETBOX_REDIS_PASSWORD:-netboxredis}
+      - REDIS_DATABASE=0
+      - REDIS_CACHE_HOST=netbox-redis
+      - REDIS_CACHE_PORT=6379
+      - REDIS_CACHE_PASSWORD=${NETBOX_REDIS_PASSWORD:-netboxredis}
+      - REDIS_CACHE_DATABASE=1
+      - SECRET_KEY=${NETBOX_SECRET_KEY:-please-change-this-secret-key}
+      - ALLOWED_HOSTS=*
+    volumes:
+      - ./data/netbox-media:/opt/netbox/netbox/media
+      - ./data/netbox-reports:/opt/netbox/netbox/reports
+      - ./data/netbox-scripts:/opt/netbox/netbox/scripts
+    restart: unless-stopped
+
+  netbox-postgres:
+    image: postgres:16-alpine
+    container_name: netbox-postgres
+    environment:
+      - POSTGRES_DB=netbox
+      - POSTGRES_USER=netbox
+      - POSTGRES_PASSWORD=${NETBOX_DB_PASSWORD:-netbox}
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  netbox-redis:
+    image: valkey/valkey:8-alpine
+    container_name: netbox-redis
+    command: ["sh", "-c", "valkey-server --requirepass $$REDIS_PASSWORD"]
+    environment:
+      - REDIS_PASSWORD=${NETBOX_REDIS_PASSWORD:-netboxredis}
+    volumes:
+      - ./data/redis:/data
+    restart: unless-stopped

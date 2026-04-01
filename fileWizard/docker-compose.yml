@@ -9,3 +9,4 @@ services:
     volumes:
       - ./uploads_data:/app/uploads
       - ./processed_data:/app/processed
+    restart: unless-stopped

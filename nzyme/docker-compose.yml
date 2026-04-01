@@ -1,0 +1,9 @@
+services:
+  nzyme:
+    image: graafnet/nzyme-node:latest
+    container_name: nzyme
+    ports:
+      - 127.0.0.1:8090:8080
+    volumes:
+      - ./data:/var/lib/nzyme
+    restart: unless-stopped

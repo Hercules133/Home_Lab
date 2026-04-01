@@ -8,4 +8,4 @@ services:
       - ./config:/app/config
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
-      HOMEPAGE_ALLOWED_HOSTS: gethomepage.dev
+      HOMEPAGE_ALLOWED_HOSTS: ${HOMEPAGE_ALLOWED_HOSTS:-localhost,127.0.0.1}

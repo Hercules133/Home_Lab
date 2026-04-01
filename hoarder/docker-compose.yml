@@ -1,0 +1,41 @@
+services:
+  hoarder:
+    image: ghcr.io/karakeep-app/karakeep:${KARAKEEP_VERSION:-release}
+    container_name: hoarder
+    env_file:
+      - .env
+    environment:
+      MEILI_ADDR: http://hoarder_meilisearch:7700
+      BROWSER_WEB_URL: http://hoarder_chrome:9222
+      DATA_DIR: /data
+    depends_on:
+      - hoarder_chrome
+      - hoarder_meilisearch
+    ports:
+      - 127.0.0.1:3010:3000
+    volumes:
+      - ./data:/data
+    restart: unless-stopped
+
+  hoarder_chrome:
+    image: gcr.io/zenika-hub/alpine-chrome:124
+    container_name: hoarder_chrome
+    command:
+      - --no-sandbox
+      - --disable-gpu
+      - --disable-dev-shm-usage
+      - --remote-debugging-address=0.0.0.0
+      - --remote-debugging-port=9222
+      - --hide-scrollbars
+    restart: unless-stopped
+
+  hoarder_meilisearch:
+    image: getmeili/meilisearch:v1.37.0
+    container_name: hoarder_meilisearch
+    env_file:
+      - .env
+    environment:
+      MEILI_NO_ANALYTICS: "true"
+    volumes:
+      - ./meilisearch:/meili_data
+    restart: unless-stopped
